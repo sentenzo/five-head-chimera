@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  backend:
+    image: fhc/backend
+    build:
+      dockerfile: ./backend/Dockerfile
+    depends_on:
+      - rabbitmq
+
+  db:
+    image: fhc/db
+    build:
+      dockerfile: ./db/Dockerfile
+
+  frontend:
+    image: fhc/frontend
+    build:
+      dockerfile: ./frontend/Dockerfile
+    depends_on:
+      - backend
+
+  rabbitmq:
+    image: fhc/rabbitmq
+    build:
+      dockerfile: ./rabbitmq/Dockerfile
+    depends_on:
+      - servicedb
+
+  servicedb:
+    image: fhc/servicedb
+    build:
+      dockerfile: ./servicedb/Dockerfile
+    depends_on:
+      - db
