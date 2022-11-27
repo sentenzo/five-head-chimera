@@ -27,11 +27,11 @@ services:
     build:
       dockerfile: ./rabbitmq/Dockerfile
     depends_on:
-      - servicedb
+      - dbwriter
 
-  servicedb:
-    image: fhc/servicedb
+  dbwriter:
+    image: fhc/dbwriter
     build:
-      dockerfile: ./servicedb/Dockerfile
+      dockerfile: ./dbwriter/Dockerfile
     depends_on:
       - db
