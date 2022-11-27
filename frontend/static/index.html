@@ -5,34 +5,50 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <link href="bootstrap/bootstrap.min.css" rel="stylesheet">
+    <script src="bootstrap/bootstrap.bundle.min.js"></script>
+
     <script src="script.js" defer></script>
+    <link href="style.css" rel="stylesheet">
 </head>
 <body>
-    <form action="">
-        <div>
-            <label for="last_name">Last name:</label> <input type="text" value="Last name" id="last_name">
-        </div>
-        
-        <div>
-            <label for="first_name">First name:</label> <input type="text" value="First name" id="first_name">
-        </div>
-        
-        <div>
-            <label for="patronym">Patronym:</label> <input type="text" value="Patronym" id="patronym">
-        </div>
-        
-        <div>
-            <label for="phone">Phone:</label> <input type="text" value="+1 234 567 89 01" id="phone">
-        </div>
-        
-        <div>
-            <label for="feedback_text">Feedback text:</label> <textarea name="feedback_text" id="feedback_text" cols="30" rows="10">...</textarea>
-        </div>
-        
-        <div>
-            <button id="btn_submit">Send</button>
-        </div>
-        
-    </form>
+    <div class="container">
+        <form action="PUT">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label class="form-label" for="first_name">First name:</label> 
+                    <input class="form-control" type="text" placeholder="Jonathan" id="first_name">
+                </div>
+                <div class="col-sm-6">
+                    <label class="form-label" for="last_name">Last name:</label> 
+                    <input class="form-control" type="text" placeholder="Swift" id="last_name">
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="patronym">Patronym:</label> 
+                    <input class="form-control" type="text" placeholder="son of Jonathan" id="patronym">
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="phone">Phone:</label> 
+                    <input class="form-control" type="text" placeholder="+1 (234) 567-8901" id="phone">
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="feedback_text">Feedback text:</label> 
+                    <textarea class="form-control" name="feedback_text" id="feedback_text" cols="30" rows="10" placeholder="A Modest Proposal for preventing the children of poor people from being a burthen to their parents or country, and for making them beneficial to the public ..."></textarea>
+                </div>
+                
+                <div class="col-12 ma">
+                    <button id="btn_submit" class="w-100 btn btn-primary btn-lg mt-2" type="submit">Send</button>
+                </div>
+            </div>
+
+            
+            <div>
+                
+            </div>
+            
+        </form>
+    </div>
+
 </body>
 </html>

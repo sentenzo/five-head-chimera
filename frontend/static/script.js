@@ -1,14 +1,13 @@
 "use strict";
 
-// alert("hello");
-
-
-// alert(document.getElementById("application_text").value);
-
 (function () {
-    let btn_submit = document.getElementById("btn_submit");
+
+    const backend_handler_url = "https://httpbin.org/put";
+
+    const btn_submit = document.getElementById("btn_submit");
     btn_submit.onclick = function (event) {
         event.preventDefault();
+
         let feedback = {};
         feedback.sender = {};
         feedback.sender.last_name = document.getElementById("last_name").value;
@@ -16,6 +15,16 @@
         feedback.sender.patronym = document.getElementById("patronym").value;
         feedback.sender.phone = document.getElementById("phone").value;
         feedback.message = document.getElementById("feedback_text").value;
-        console.log(JSON.stringify(feedback));
+        console.log(JSON.stringify(feedback, null, 2));
+
+        // https://stackoverflow.com/a/47065313/2493536
+        fetch(backend_handler_url, {
+            method: "PUT",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(feedback)
+        }).then(res => {
+            console.log("Request complete! response:", res);
+        });
     };
+
 })();
