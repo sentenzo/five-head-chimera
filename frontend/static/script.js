@@ -22,9 +22,6 @@
         fetch(backend_handler_url, {
             method: "PUT",
             headers: {
-                'Access-Control-Request-Method': 'PUT',
-                'Access-Control-Request-Headers': 'Content-Type',
-                'Origin': 'http://localhost:8888/',
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(feedback),

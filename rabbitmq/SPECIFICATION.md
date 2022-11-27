@@ -3,3 +3,5 @@ This document contains  detailed description of the **RabbitMQ** service as a pa
 To read more about the system as a haul, see: `SPECIFICATION.md`.
 
 # RabbitMQ
+
+Aggregates messages from **backend**, forwards it to **database writer**.

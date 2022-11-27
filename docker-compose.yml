@@ -33,8 +33,14 @@ services:
     image: fhc/rabbitmq
     build:
       context: ./rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672 # the default user:pass is guest:guest
     depends_on:
       - dbwriter
+    volumes:
+      - ./.docker-volumes/rabbitmq/data/:/var/lib/rabbitmq
+      - ./.docker-volumes/rabbitmq/log/:/var/log/rabbitmq
 
   dbwriter:
     image: fhc/dbwriter
