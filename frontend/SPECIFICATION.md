@@ -4,12 +4,15 @@ To read more about the system as a haul, see: `SPECIFICATION.md`.
 
 # Frontend
 
-Страница приема обращения гражданина, обязательные элементы:
-- поле Фамилия (тип текст)
-- поле Имя (тип текст)
-- поле Отчество (тип текст)
-- поле Телефон (тип телефон, для упрощения цифры)
-- поле Обращение (тип большой текст)
-- кнопка "Отправить" (инициализируется отправку данных на бэкенд)
-Реализация: html, js(jQuery) или что-то максимально простое, формирование json(или другого представления данных)
-и отправдка на бэкенд.
+This is a very simple one-page site with a web-form on it. 
+
+It has a button "Send", which pushes a JSON file to the **backend** service. 
+
+The JSON contains the field-values from the form. The form itself has the follow fields (all required):
+- first name (required)
+- last name (required)
+- patronim (optional)
+- phone number (required)
+- message text (required)
+
+There are no restrictions on the JSON format or used js/css frameworks in the initial task, but it is advised to keep it reasonably simple.
