@@ -1,17 +1,6 @@
 version: "3"
 
 services:
-  backend:
-    image: fhc/backend
-    build:
-      dockerfile: ./backend/Dockerfile
-    depends_on:
-      - rabbitmq
-
-  db:
-    image: fhc/db
-    build:
-      dockerfile: ./db/Dockerfile
 
   frontend:
     image: fhc/frontend
@@ -19,19 +8,37 @@ services:
       context: frontend
     ports:
       - ${FRONTEND_LOCAL_PORT}:80
+    depends_on:
+      - backend
     volumes:
-      - ./frontend/static:/app/static:ro # for dev purposes
+      - ./frontend/static:/app/static:ro
+
+  backend:
+    image: fhc/backend
+    ports:
+      - ${BACKEND_LOCAL_PORT}:8000
+    build:
+      context: ./backend
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./backend/service:/usr/src/app:ro
+
+  db:
+    image: fhc/db
+    build:
+      dockerfile: ./db/Dockerfile
 
   rabbitmq:
     image: fhc/rabbitmq
     build:
-      dockerfile: ./rabbitmq/Dockerfile
+      context: ./rabbitmq
     depends_on:
       - dbwriter
 
   dbwriter:
     image: fhc/dbwriter
     build:
-      dockerfile: ./dbwriter/Dockerfile
+      context: ./dbwriter
     depends_on:
       - db

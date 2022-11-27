@@ -2,7 +2,8 @@
 
 (function () {
 
-    const backend_handler_url = "https://httpbin.org/put";
+    const backend_handler_url = "http://localhost:9999/feedback"
+    // "https://httpbin.org/put";
 
     const btn_submit = document.getElementById("btn_submit");
     btn_submit.onclick = function (event) {
@@ -20,11 +21,17 @@
         // https://stackoverflow.com/a/47065313/2493536
         fetch(backend_handler_url, {
             method: "PUT",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(feedback)
-        }).then(res => {
-            console.log("Request complete! response:", res);
-        });
+            headers: {
+                'Access-Control-Request-Method': 'PUT',
+                'Access-Control-Request-Headers': 'Content-Type',
+                'Origin': 'http://localhost:8888/',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(feedback),
+
+        })
+            .then((response) => response.text())
+            .then(text => console.log(text));
     };
 
 })();
