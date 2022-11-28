@@ -1,7 +1,7 @@
 lint:
-	poetry run isort backend frontend
-	poetry run black backend frontend
-	poetry run pylint backend frontend
+	poetry run isort backend dbwriter
+	poetry run black backend dbwriter
+	poetry run pylint backend dbwriter
 
 export_requirements:
 	poetry export --only backend --without-hashes -f requirements.txt --output backend/requirements.txt

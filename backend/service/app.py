@@ -6,6 +6,7 @@ import tornado.web
 
 
 RABBITMQ_HOST = os.environ.get("RABBITMQ_HOST", default="localhost")
+QUEUE_NAME = os.environ.get("QUEUE_NAME", default="feedback")
 
 
 def push_to_queue(message):
@@ -13,8 +14,8 @@ def push_to_queue(message):
         pika.ConnectionParameters(RABBITMQ_HOST)
     )
     channel = connection.channel()
-    channel.queue_declare(queue="feedback", durable=True)
-    channel.basic_publish(exchange="", routing_key="feedback", body=message)
+    channel.queue_declare(queue=QUEUE_NAME, durable=True)
+    channel.basic_publish(exchange="", routing_key=QUEUE_NAME, body=message)
     connection.close()
 
 

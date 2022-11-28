@@ -10,8 +10,8 @@ services:
       - 8888:80
     depends_on:
       - backend
-    volumes:
-      - ./frontend/static:/app/static:ro
+    # volumes:
+    #   - ./frontend/static:/app/static:ro
 
   backend:
     image: fhc/backend
@@ -19,12 +19,13 @@ services:
       - 9999:8000 # if changing local port, also change the URL in frontend/static/script.js
     build:
       context: ./backend
-    environment:
-      - RABBITMQ_HOST=rabbitmq
+    env_file:
+      - rabbitmq-client.env
     depends_on:
-      - rabbitmq
-    volumes:
-      - ./backend/service:/usr/src/app:ro
+      rabbitmq:
+        condition: service_healthy
+    # volumes:
+    #   - ./backend/service:/usr/src/app:ro
 
   rabbitmq:
     image: fhc/rabbitmq
@@ -33,18 +34,28 @@ services:
     ports:
       - 5672:5672
       - 15672:15672 # the default user:pass is guest:guest
-    depends_on:
-      - dbwriter
     volumes:
       - ./.docker-volumes/rabbitmq/data/:/var/lib/rabbitmq
       - ./.docker-volumes/rabbitmq/log/:/var/log/rabbitmq
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 8s
+      timeout: 5s
+      retries: 10
 
   dbwriter:
     image: fhc/dbwriter
     build:
       context: ./dbwriter
+    env_file:
+      - rabbitmq-client.env
+    environment:
+      - PYTHONUNBUFFERED=1
     depends_on:
-      - db
+      rabbitmq:
+        condition: service_healthy
+      db:
+        condition: service_started
 
   db:
     image: fhc/db
