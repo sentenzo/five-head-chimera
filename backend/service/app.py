@@ -1,7 +1,21 @@
 import asyncio
+import os
 
 import pika
 import tornado.web
+
+
+RABBITMQ_HOST = os.environ.get("RABBITMQ_HOST", default="localhost")
+
+
+def push_to_queue(message):
+    connection = pika.BlockingConnection(
+        pika.ConnectionParameters(RABBITMQ_HOST)
+    )
+    channel = connection.channel()
+    channel.queue_declare(queue="feedback", durable=True)
+    channel.basic_publish(exchange="", routing_key="feedback", body=message)
+    connection.close()
 
 
 class FeedbackHandler(tornado.web.RequestHandler):
@@ -11,50 +25,21 @@ class FeedbackHandler(tornado.web.RequestHandler):
         self.set_header("Access-Control-Allow-Methods", "*")
 
     def get(self):
-        self.write("Hello, world")
-        connection = pika.BlockingConnection(
-            pika.ConnectionParameters("rabbitmq")
-        )
-        channel = connection.channel()
-        channel.queue_declare(queue="hello")
-        channel.basic_publish(
-            exchange="", routing_key="hello", body="Hello World!"
-        )
-        self.write("\n [x] Sent 'Hello World!'")
-        connection.close()
+        self.write("pong")
 
     def put(self):
-        self.write("Hello from backend!")
+        push_to_queue(self.request.body)
+        print(self.request.body)
 
     def options(self):
         self.set_status(204)
         self.finish()
 
 
-class QueueHandler(tornado.web.RequestHandler):
-    def get(self):
-        ...
-        # connection = pika.BlockingConnection(
-        #     pika.ConnectionParameters("rabbitmq")
-        # )
-        # channel = connection.channel()
-        # channel.queue_declare(queue="hello")
-
-        # def callback(ch, method, properties, body):
-        #     self.write(" [x] Received %r" % body)
-        #     channel.stop_consuming()
-
-        # channel.basic_consume(
-        #     queue="hello", auto_ack=True, on_message_callback=callback
-        # )
-        # channel.start_consuming()
-
-
 def make_app():
     return tornado.web.Application(
         [
             (r"/feedback", FeedbackHandler),
-            (r"/queue", QueueHandler),
         ],
         autoreload=True,
     )

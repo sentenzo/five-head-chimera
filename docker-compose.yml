@@ -19,6 +19,8 @@ services:
       - ${BACKEND_LOCAL_PORT}:8000
     build:
       context: ./backend
+    environment:
+      - RABBITMQ_HOST=rabbitmq
     depends_on:
       - rabbitmq
     volumes:

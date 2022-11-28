@@ -9,4 +9,4 @@ RUN pip install --no-cache-dir -r requirements.txt && rm requirements.txt
 
 COPY ./service .
 
-CMD ["python", "app.py"]
+CMD ["python", "app.py", "--logging=info"]
