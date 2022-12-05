@@ -54,7 +54,7 @@ This is not the original task text, but rather my interpretation based on my fri
 
 
 # My implementation
-<div style="text-align: center">
+<div align="center">
 
 ![architecture.png](architecture.png)
 
