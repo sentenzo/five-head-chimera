@@ -30,7 +30,7 @@ def loop_event(connection):
             print("No message returned")
         elif not process_one_message(method_frame, header_frame, body):
             print(
-                "Faild to process message:",
+                "Failed to process message:",
                 method_frame,
                 header_frame,
                 body,
@@ -52,7 +52,7 @@ def main():
             )
             loop_event(connection)
         except Exception as ex:
-            print("Faild to connect to RabbitMQ:")
+            print("Failed to connect to RabbitMQ:")
             print(ex)
             time.sleep(DELAY)
 
