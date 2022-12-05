@@ -55,16 +55,22 @@ services:
       rabbitmq:
         condition: service_healthy
       db:
-        condition: service_started
+        condition: service_healthy
 
   db:
     image: fhc/db
     build:
-      dockerfile: ./db/Dockerfile
+      context: ./db
     environment:
       - POSTGRES_DB=feedback
       - POSTGRES_PASSWORD=hackme
+      - PGUSER=postgres
     ports:
       - 6789:5432
     volumes:
       - ./.docker-volumes/db:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-d", "feedback" ]
+      interval: 8s
+      timeout: 5s
+      retries: 10
