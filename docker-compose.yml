@@ -20,7 +20,7 @@ services:
     build:
       context: ./backend
     env_file:
-      - rabbitmq-client.env
+      - rabbitmq.env
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -48,7 +48,8 @@ services:
     build:
       context: ./dbwriter
     env_file:
-      - rabbitmq-client.env
+      - rabbitmq.env
+      - db.env
     environment:
       - PYTHONUNBUFFERED=1
     depends_on:
@@ -61,16 +62,14 @@ services:
     image: fhc/db
     build:
       context: ./db
-    environment:
-      - POSTGRES_DB=feedback
-      - POSTGRES_PASSWORD=hackme
-      - PGUSER=postgres
+    env_file:
+      - db.env
     ports:
       - 6789:5432
     volumes:
       - ./.docker-volumes/db:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready", "-d", "feedback" ]
+      test: [ "CMD-SHELL", "pg_isready", "-d", "$(POSTGRES_DB)" ]
       interval: 8s
       timeout: 5s
       retries: 10
