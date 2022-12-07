@@ -40,7 +40,7 @@ This is not the original task text, but rather my interpretation based on my fri
 > **You should use Tornado web framework (Python).**
 >
 > ## Message broker
-> **You should use RabbitMQ with managemen-plugin.**
+> **You should use RabbitMQ with management-plugin.**
 >
 > ## Database writer
 > This service communicates with message broker, takes the messages from backend and writes it to the database.
@@ -62,7 +62,7 @@ This is not the original task text, but rather my interpretation based on my fri
 
 ## Frontend
 
-Nginx-based container. Statuc web-page. Pure javascript. Bootstrap.
+Nginx-based container. Static web-page. Pure javascript. Bootstrap.
 
 ## Backend
 

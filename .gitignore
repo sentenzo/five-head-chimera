@@ -2,3 +2,5 @@
 .env
 .venv
 .docker-volumes
+
+*.pyc
