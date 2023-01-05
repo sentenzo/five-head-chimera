@@ -22,26 +22,65 @@ services:
     env_file:
       - rabbitmq.env
     depends_on:
-      rabbitmq:
+      rabbitmq-master:
         condition: service_healthy
     # volumes:
     #   - ./backend/service:/usr/src/app:ro
 
-  rabbitmq:
+  rabbitmq-master:
+    hostname: rabbit-host
     image: fhc/rabbitmq
     build:
       context: ./rabbitmq
+    environment:
+      - RABBITMQ_NODENAME=sunny-rabbit
     ports:
       - 5672:5672
       - 15672:15672 # the default user:pass is guest:guest
-    volumes:
-      - ./.docker-volumes/rabbitmq/data/:/var/lib/rabbitmq
-      - ./.docker-volumes/rabbitmq/log/:/var/log/rabbitmq
     healthcheck:
       test: [ "CMD", "rabbitmqctl", "status" ]
       interval: 8s
       timeout: 5s
       retries: 10
+
+  rabbitmq-slave-1:
+    hostname: rabbit-slave-1
+    image: fhc/rabbitmq
+    build:
+      context: ./rabbitmq
+    links:
+      - rabbitmq-master
+    environment:
+      - RABBITMQ_NODENAME=moony-rabbit
+    ports:
+      - 5677:5672
+      - 15677:15672
+    volumes:
+      - ./rabbitmq/cluster-entrypoint.sh:/usr/local/bin/cluster-entrypoint.sh
+    depends_on:
+      rabbitmq-master:
+        condition: service_healthy
+    entrypoint: /usr/local/bin/cluster-entrypoint.sh
+
+  rabbitmq-slave-2:
+    hostname: rabbit-slave-2
+    image: fhc/rabbitmq
+    build:
+      context: ./rabbitmq
+    links:
+      - rabbitmq-master
+    environment:
+      - RABBITMQ_NODENAME=nighty-rabbitmq
+    ports:
+      - 5678:5672
+      - 15678:15672
+    volumes:
+      - ./rabbitmq/cluster-entrypoint.sh:/usr/local/bin/cluster-entrypoint.sh
+    depends_on:
+      rabbitmq-master:
+        condition: service_healthy
+
+    entrypoint: /usr/local/bin/cluster-entrypoint.sh
 
   dbwriter:
     image: fhc/dbwriter
@@ -53,7 +92,7 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
     depends_on:
-      rabbitmq:
+      rabbitmq-master:
         condition: service_healthy
       db:
         condition: service_healthy

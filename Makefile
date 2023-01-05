@@ -15,3 +15,6 @@ down:
 
 local_backend:
 	poetry run python ./backend/service/app.py --logging=info
+
+prune:
+	docker image prune
