@@ -5,3 +5,5 @@ To read more about the system as a haul, see: `SPECIFICATION.md`.
 # RabbitMQ
 
 Aggregates messages from **backend**, forwards it to **database writer**.
+
+I've decided to make it a cluster of three nodes.
